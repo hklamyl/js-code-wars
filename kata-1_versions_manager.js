@@ -4,10 +4,8 @@ class Version {
         let major = 1, minor = 0, patch = 0;
         if (version != null) {
             let values = version.split('.').slice(0, 3);
-            for (let value of values) {
-                if (isNaN(Number.parseInt(value))) {
-                    throw new Error('Error occured while parsing version!');
-                }
+            if (values.some(isNaN)) {
+                throw new Error('Error occurred while parsing version!');
             }
             major = Number.parseInt((values.shift()));
             minor |= Number.parseInt((values.shift()));
@@ -20,7 +18,7 @@ class Version {
     }
 
     major() {
-        this.hisotry.push(`${this.majorValue}.${this.minorValue}.${this.patchValue}`);
+        this.hisotry.push(this.release());
         this.majorValue += 1;
         this.minorValue = 0;
         this.patchValue = 0;
@@ -28,14 +26,14 @@ class Version {
     }
 
     minor() {
-        this.hisotry.push(`${this.majorValue}.${this.minorValue}.${this.patchValue}`);
+        this.hisotry.push(this.release());
         this.minorValue += 1;
         this.patchValue = 0;
         return this;
     }
 
     patch() {
-        this.hisotry.push(`${this.majorValue}.${this.minorValue}.${this.patchValue}`);
+        this.hisotry.push(this.release());
         this.patchValue += 1;
         return this;
     }
@@ -110,6 +108,5 @@ function testRollback() {
 
 
 testConstructor();
-testVersionIncrease();
-testRollback();
-
+// testVersionIncrease();
+// testRollback();

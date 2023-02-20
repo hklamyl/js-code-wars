@@ -8,7 +8,7 @@ const romanMap = {
     M: 1_000
 };
 
-function romanConverter(input) {
+function romanConverter1(input) {
     let result = 0;
     for (let i = 0; i < input.length - 1; i++) {
         if (romanMap[input[i]] < romanMap[input[i + 1]]) {
@@ -21,17 +21,32 @@ function romanConverter(input) {
     return result;
 }
 
+function romanConverter2(input) {
+    return input.split('').map(n => romanMap[n]).reduceRight((previous, current) => {
+        if (previous[1] > current) {
+            return [previous[0] - current, current];
+        } else {
+            return [previous[0] + current, current];
+        }
+    }, [0, 0])[0];
+}
 
-console.log(romanConverter('I')); // 1
-console.log(romanConverter('II')); // 2
-console.log(romanConverter('IV')); // 4
-console.log(romanConverter('VI')); // 6
-console.log(romanConverter('IX')); // 9
-console.log(romanConverter('X')); // 10
-console.log(romanConverter('XIX')); // 19
-console.log(romanConverter('XXI')); // 21
-console.log(romanConverter('XC')); // 90
-console.log(romanConverter('M')); // 1000
-console.log(romanConverter('MDCLXVI')); // 1666
-console.log(romanConverter('MCMXC')); // 1990
-console.log(romanConverter('MMVIII')); // 2008
+
+function testWith(method) {
+    console.log(method('I')); // 1
+    console.log(method('II')); // 2
+    console.log(method('IV')); // 4
+    console.log(method('VI')); // 6
+    console.log(method('IX')); // 9
+    console.log(method('X')); // 10
+    console.log(method('XIX')); // 19
+    console.log(method('XXI')); // 21
+    console.log(method('XC')); // 90
+    console.log(method('M')); // 1000
+    console.log(method('MDCLXVI')); // 1666
+    console.log(method('MCMXC')); // 1990
+    console.log(method('MMVIII')); // 2008
+}
+
+// testWith(romanConverter1);
+testWith(romanConverter2);
